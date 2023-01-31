@@ -8,6 +8,7 @@
         <module>tuling-admin</module>
         <module>tuling-mpbg</module>
         <module>tuling-portal</module>
+        <module>ShardingSphereDemo</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

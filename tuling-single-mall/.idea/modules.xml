@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ShardingSphereDemo/ShardingSphereDemo.iml" filepath="$PROJECT_DIR$/ShardingSphereDemo/ShardingSphereDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/tuling-admin/tuling-admin.iml" filepath="$PROJECT_DIR$/tuling-admin/tuling-admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/tuling-common/tuling-common.iml" filepath="$PROJECT_DIR$/tuling-common/tuling-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/tuling-mpbg/tuling-mpbg.iml" filepath="$PROJECT_DIR$/tuling-mpbg/tuling-mpbg.iml" />
