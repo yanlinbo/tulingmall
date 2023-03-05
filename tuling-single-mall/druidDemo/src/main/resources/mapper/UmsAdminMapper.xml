@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.druid.demo.mapper.UmsAdminMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.druid.demo.modle.UmsAdmin">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="icon" property="icon" />
+        <result column="email" property="email" />
+        <result column="nick_name" property="nickName" />
+        <result column="note" property="note" />
+        <result column="create_time" property="createTime" />
+        <result column="login_time" property="loginTime" />
+        <result column="status" property="status" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, username, password, icon, email, nick_name,  note, create_time, login_time,status
+    </sql>
+    <insert id="insertUmsAdmin" parameterType="com.druid.demo.modle.UmsAdmin">
+        insert into ums_admin value (#{id},#{username},#{password},#{icon},#{email},#{nickName},#{note},#{createTime},#{loginTime},#{status});
+
+    </insert>
+    <update id="updateUmsAdmin" parameterType="com.druid.demo.modle.UmsAdmin">
+        UPDATE ums_admin
+            SET
+                username = #{username},
+                password = #{password},
+                icon = #{icon},
+                email = #{id},
+                nick_name = #{nickName},
+                note = #{note}
+        WHERE id = #{id};
+
+    </update>
+    <insert id="batchInsertUmsAdmin" parameterType="com.druid.demo.modle.UmsAdmin" keyColumn="id" keyProperty="id"
+            useGeneratedKeys="true">
+        insert into ums_admin (id, username, password, icon, email, nick_name,  note, create_time, login_time,status)
+        values (#{id},#{username},#{password},#{icon},#{email},#{nickName},#{note},#{createTime},#{loginTime},#{status});
+    </insert>
+    <select id="getUmsAdminById" resultType="com.druid.demo.modle.UmsAdmin">
+        SELECT
+        id, username, password, icon, email, nick_name, nick_name, create_time, login_time,status
+        FROM
+            ums_admin rr
+        WHERE rr.id=#{id}
+    </select>
+    <select id="findUmsAdminList" resultType="com.druid.demo.modle.UmsAdmin">
+        SELECT
+        id, username, password, icon, email, nick_name, nick_name, create_time, login_time,status
+        FROM
+            ums_admin rr
+        WHERE rr.note='123'
+
+    </select>
+
+</mapper>
