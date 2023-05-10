@@ -44,13 +44,22 @@ public class ServletUtils {
         return Convert.toStr(getRequest().getParameter(name), defaultValue);
     }
 
-    /**
-     * 获取Integer参数  todo 根据“获取String参数”去实现“获取Integer参数”
-     */
 
     /**
-     * 获取Boolean参数 todo 根据“获取String参数”去实现“获取Boolean参数”
+     * 获取Boolean参数
      */
+    public static Boolean getParameterToBool(String name)
+    {
+        return Convert.toBool(getRequest().getParameter(name));
+    }
+
+    /**
+     * 获取Boolean参数
+     */
+    public static Boolean getParameterToBool(String name, Boolean defaultValue)
+    {
+        return Convert.toBool(getRequest().getParameter(name), defaultValue);
+    }
 
     /**
      * 获取request

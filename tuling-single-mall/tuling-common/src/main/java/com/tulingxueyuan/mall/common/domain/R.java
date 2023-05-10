@@ -48,9 +48,18 @@ public class R<T> implements Serializable {
     /** 失败 */
     public static final int FAIL = Constants.FAIL;
 
+    public static <T> R<T> ok(T data)
+    {
+        return restResult(data, SUCCESS, null);
+    }
+
     public static <T> R<T> fail(int code, String msg)
     {
         return restResult(null, code, msg);
+    }
+    public static <T> R<T> fail(String msg)
+    {
+        return restResult(null, FAIL, msg);
     }
 
     private static <T> R<T> restResult(T data, int code, String msg)
