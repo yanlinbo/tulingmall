@@ -1,5 +1,7 @@
 package com.ylb.mybatise.binding;
 
+import com.ylb.mybatise.session.SqlSession;
+
 import java.lang.reflect.Proxy;
 import java.util.Map;
 
@@ -20,7 +22,12 @@ public class MapperProxyFactory<T> {
      * @param sqlSession
      * @return
      */
-    public T newInstance(Map<String,String> sqlSession){
+//    public T newInstance(Map<String,String> sqlSession){
+//        final MapperProxy MapperProxy = new MapperProxy(sqlSession,mapperInterface);
+//        return (T)Proxy.newProxyInstance(mapperInterface.getClassLoader(), new Class[]{mapperInterface}, MapperProxy);
+//    }
+
+    public T newInstance(SqlSession sqlSession){
         final MapperProxy MapperProxy = new MapperProxy<>(sqlSession,mapperInterface);
         return (T)Proxy.newProxyInstance(mapperInterface.getClassLoader(), new Class[]{mapperInterface}, MapperProxy);
     }

@@ -1,5 +1,7 @@
 package com.ylb.mybatise.binding;
 
+import com.ylb.mybatise.session.SqlSession;
+
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -11,10 +13,11 @@ import java.util.Map;
  */
 public class MapperProxy<T> implements InvocationHandler, Serializable {
 
-    private Map<String,String> sqlSession;
+//    private Map<String,String> sqlSession;
+    private SqlSession sqlSession;
     private final Class<T> mapperInteface;  //为什么加了final后必须生成构造方法
 
-    public MapperProxy(Map<String, String> sqlSession, Class<T> mapperInteface) {
+    public MapperProxy(SqlSession sqlSession, Class<T> mapperInteface) {
         this.sqlSession = sqlSession;
         this.mapperInteface = mapperInteface;
     }
@@ -22,10 +25,12 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if(Object.class.equals(method.getDeclaringClass())){ //如果是 Object 提供的 toString、hashCode 等方法是不需要代理执行的，所以添加 Object.class.equals(method.getDeclaringClass())
+        //如果是 Object 提供的 toString、hashCode 等方法是不需要代理执行的，所以添加 Object.class.equals(method.getDeclaringClass())
+        if(Object.class.equals(method.getDeclaringClass())){
             return method.invoke(this,args);
         }else{
-            return "你被代理了！" + sqlSession.get(mapperInteface.getName()+"."+method.getName());
+//            return "你被代理了！" + sqlSession.get(mapperInteface.getName()+"."+method.getName());
+            return sqlSession.selectOne(method.getName(),args);
         }
 
     }
