@@ -52,6 +52,13 @@ public class DefaultSqlSession implements SqlSession {
 //        return (T) ("你被代理了！" + "\n方法：" + statement + "\n入参：" + parameter + "\n待执行SQL：" + mappedStatement.getSql());
     }
 
+    /**
+     * 这个方法需要重点看
+     * @param resultSet
+     * @param clazz
+     * @param <T>
+     * @return
+     */
     private <T> List<T> resultSet2Obj(ResultSet resultSet, Class<?> clazz) {
         List<T> list = new ArrayList<>();
         try {
@@ -66,7 +73,7 @@ public class DefaultSqlSession implements SqlSession {
                     String setMethod = "set" + columnName.substring(0, 1).toUpperCase() + columnName.substring(1);
                     Method method;
                     if (value instanceof Timestamp) {
-                        method = clazz.getMethod(setMethod, Date.class);
+                        method = clazz.getMethod(setMethod, Timestamp.class);
                     } else {
                         method = clazz.getMethod(setMethod, value.getClass());
                     }

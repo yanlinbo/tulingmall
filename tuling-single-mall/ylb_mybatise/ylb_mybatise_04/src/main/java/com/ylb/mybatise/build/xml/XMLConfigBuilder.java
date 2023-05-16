@@ -4,6 +4,7 @@ import com.ylb.mybatise.build.BaseBuilder;
 import com.ylb.mybatise.datasource.DataSourceFactory;
 import com.ylb.mybatise.enums.SqlCommandType;
 import com.ylb.mybatise.io.Resources;
+import com.ylb.mybatise.mapping.BoundSql;
 import com.ylb.mybatise.mapping.Environment;
 import com.ylb.mybatise.mapping.MappedStatement;
 import com.ylb.mybatise.session.Configuration;
@@ -135,7 +136,8 @@ public class XMLConfigBuilder extends BaseBuilder {
                 String msId = namespace + "." + id;
                 String nodeName = node.getName();
                 SqlCommandType sqlCommandType = SqlCommandType.valueOf(nodeName.toUpperCase(Locale.ENGLISH));
-                MappedStatement mappedStatement = new MappedStatement.Builder(configuration, msId, sqlCommandType, parameterType, resultType, sql, parameter).build();
+                BoundSql boundSql = new BoundSql(sql, parameter, parameterType, resultType);
+                MappedStatement mappedStatement = new MappedStatement.Builder(configuration, msId, sqlCommandType, boundSql).build();
                 // 添加解析 SQL
                 configuration.addMappedStatement(mappedStatement);
             }

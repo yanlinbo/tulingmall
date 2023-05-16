@@ -9,7 +9,7 @@
             <transactionManager type="JDBC"/>
             <dataSource type="DRUID">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://127.0.0.1:3306/mybatis?useUnicode=true&amp;useSSL=false"/>
+                <property name="url" value="jdbc:mysql://127.0.0.1:3306/mybatis??serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;allowPublicKeyRetrieval=true"/>
                 <property name="username" value="root"/>
                 <property name="password" value="123456"/>
             </dataSource>
