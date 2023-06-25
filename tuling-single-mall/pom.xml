@@ -12,6 +12,7 @@
         <module>RocketMQDemo</module>
         <module>ylb_spring</module>
         <module>ylb_mybatise</module>
+        <module>JavaBase</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
