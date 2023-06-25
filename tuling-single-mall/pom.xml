@@ -10,6 +10,8 @@
         <module>tuling-portal</module>
         <module>ShardingSphereDemo</module>
         <module>RocketMQDemo</module>
+        <module>ylb_spring</module>
+        <module>ylb_mybatise</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

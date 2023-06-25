@@ -1,37 +1,36 @@
 package com.ylb.mybatise.binding;
 
-import com.ylb.mybatise.session.SqlSession;
-
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * 映射器代理类
- * 1,MapperProxy 负责实现 InvocationHandler 接口的 invoke 方法，最终所有的实际调用都会调用到这个方法包装的逻辑。
+ * @author 小傅哥，微信：fustack
+ * @description 映射器代理类
+ * @date 2022/3/26
+ * @github https://github.com/fuzhengwei
+ * @Copyright 公众号：bugstack虫洞栈 | 博客：https://bugstack.cn - 沉淀、分享、成长，让自己和他人都能有所收获！
  */
 public class MapperProxy<T> implements InvocationHandler, Serializable {
 
-//    private Map<String,String> sqlSession;
-    private SqlSession sqlSession;
-    private final Class<T> mapperInteface;  //为什么加了final后必须生成构造方法
+    private static final long serialVersionUID = -6424540398559729838L;
 
-    public MapperProxy(SqlSession sqlSession, Class<T> mapperInteface) {
+    private Map<String, String> sqlSession;
+    private final Class<T> mapperInterface;
+
+    public MapperProxy(Map<String, String> sqlSession, Class<T> mapperInterface) {
         this.sqlSession = sqlSession;
-        this.mapperInteface = mapperInteface;
+        this.mapperInterface = mapperInterface;
     }
-
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        //如果是 Object 提供的 toString、hashCode 等方法是不需要代理执行的，所以添加 Object.class.equals(method.getDeclaringClass())
-        if(Object.class.equals(method.getDeclaringClass())){
-            return method.invoke(this,args);
-        }else{
-//            return "你被代理了！" + sqlSession.get(mapperInteface.getName()+"."+method.getName());
-            return sqlSession.selectOne(method.getName(),args);
+        if (Object.class.equals(method.getDeclaringClass())) {
+            return method.invoke(this, args);
+        } else {
+            return "你的被代理了！" + sqlSession.get(mapperInterface.getName() + "." + method.getName());
         }
-
     }
+
 }

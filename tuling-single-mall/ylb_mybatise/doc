@@ -1,0 +1,61 @@
+ylb_mybatise_01的目标
+    （1）熟悉JDK动态代理的使用机制
+    （2）提供一个映射器的代理实现类 MapperProxy，通过代理类包装对数据库的操作
+    （3）对 MapperProxy 代理类，提供工厂实例化操作 MapperProxyFactory#newInstance，为每个 IDAO 接口生成代理类
+
+        理解JDK动态代理的使用机制：
+            （1）newProxyInstance(ClassLoader loader,Class<?>[] interfaces,InvocationHandler invocationHandler)：
+                    loader是IUserDao（当前线程）的类加载器；
+                    interfaces是IUserDao
+                    invocationHandler是MapperProxy,MapperProxy实现了InvocationHandler的invoke方法
+            （2）invoke(Object proxy, Method method, Object[] args)
+                    proxy是代理对象，com.ylb.mybatise.binding.MapperProxy@101df177；
+                    method是被代理对象的方法，public abstract java.lang.String com.ylb.mybatise.test.dao.IUserDao.queryUserName(java.lang.String)
+                    args是被代理对象方法的参数 "10001"
+
+        不足之处：
+            （1）需要编码告知 MapperProxyFactory 要对哪个接口进行代理
+            （2）自己编写一个假的 SqlSession 处理实际调用接口时的返回结果
+
+ylb_mybatise_02的目标是对ylb_mybatise_01的不足之处进行完善和改进。
+    （1）对映射器的注册提供注册机处理，满足用户可以在使用的时候提供一个包的路径即可完成扫描和注册
+    （2）对 SqlSession 进行规范化处理，让它可以把我们的映射器代理和方法调用进行包装，建立一个生命周期模型结构，便于后续的内容的添加
+        特点：
+            （1）加入注册器通过扫描包路径获得注册
+            （2）SqlSession工厂通过注册器得到SqlSession，然后在通过mapperProxyFactory获得mapperProxy对象
+        不足之处：
+            （1）SqlSession的实现只是获取了被代理对象的方法名称和参数，并没有真正的去解析xml文件，获取SQL
+
+ylb_mybatise_03的目标是对ylb_mybatise_02的不足之处进行完善
+    （1）对 xml文件的解析以及提取出对应的 SQL 文件
+    （2）对事务的相关配置进行解析
+
+        特点：
+            （1）定义 SqlSessionFactoryBuilder 工厂建造者模式类，通过入口 IO 的方式对 XML 文件进行解析存入configuration对象
+            （2）通过configuration对象获得SqlSessionFactory
+
+        不足之处：
+            （1）解析了 XML 中数据源配置信息，并使用 Druid 创建数据源完成数据库的操作，但其实在 Mybatis 中是有自己的数据源实现的，包括无池化的 UnpooledDataSource 实现方式和有池化的 PooledDataSource 实现方式。
+
+ylb_mybatise_04的目标是对ylb_mybatise_03的不足之处进行完善
+     （1）本章节实现Mybatis 中自己的无池化的 UnpooledDataSource 和有池化的 PooledDataSource
+
+        特点：
+            （1）有池化的 PooledDataSource 继承了无池化的 UnpooledDataSource的功能并通过享元模式实现池化扩展。享元模式的本质就是缓存
+            （2）在数据源对象中使用静态代码块对所有驱动进行注册
+
+        不足之处：
+            （1）关于池化数据源的调用、执行和结果封装，目前我们还都只是在 DefaultSqlSession 中进行发起的，这样的把代码流程写死的方式肯定不合适于我们扩展使用，也不利于 SqlSession 中每一个新增定义的方法对池化数据源的调用
+            （2）我们在实现数据源池化时，对于属性信息的获取，采用的是硬编码的方式，除了driver、url、username、password这些字段以外，可能还有时候会配置一些扩展字段，那么怎么获取呢，总不能每次都是硬编码
+
+ylb_mybatise_05的目标是对ylb_mybatise_04的不足之处进行完善
+     （1）解耦 DefaultSqlSession#selectOne 方法中关于对数据源的调用、执行和结果封装，提供新的功能模块替代这部分硬编码的逻辑处理
+
+        特点：
+            （1）有池化的 PooledDataSource 继承了无池化的 UnpooledDataSource的功能并通过享元模式实现池化扩展。享元模式的本质就是缓存
+            （2）在数据源对象中使用静态代码块对所有驱动进行注册
+
+ylb_mybatise_06的目标是对ylb_mybatise_04的不足之处进行完善
+     （1）对数据源池化的属性信息动态扩展，通过元对象反射工具类 MetaObject，可以完成一个对象的属性的反射填充
+
+        特点：
