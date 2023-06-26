@@ -1,0 +1,11 @@
+dbsp-queue:
+  tdmq:
+    client:
+      sourceList:
+        - sourceCode: pulsar1
+          nameServer: pulsar://192.168.22.31:8888
+          sender:
+            destTopic:
+              - topic01
+              - topic02
+              - topic03
